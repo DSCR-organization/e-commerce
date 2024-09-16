@@ -8,6 +8,8 @@ import com.ecom.product.model.Product;
 import com.ecom.product.repo.ProductRepository;
 import com.ecom.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
     private final ProductRepository productRepository;
 
     @Override
@@ -27,6 +30,7 @@ public class ProductServiceImpl implements ProductService {
         if (!productList.isEmpty()) {
             productList.forEach(product -> productDTOList.add(ProductMapper.mapToProductDTO(product, new ProductDTO())));
         }
+        logger.info("[ProductServiceImpl] [getAllProducts] : success");
         return productDTOList;
     }
 
@@ -35,6 +39,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(code).orElseThrow(
                 () -> new ResourceNotFoundException("Couldn't find product by code: " + code)
         );
+        logger.info("[ProductServiceImpl] [getProductByCode] : success");
         return ProductMapper.mapToProductDTO(product, new ProductDTO());
     }
 
@@ -42,9 +47,11 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO addProduct(ProductDTO productDTO) {
         Optional<Product> checkProduct = productRepository.findByProductName(productDTO.getProductName());
         if (checkProduct.isPresent()) {
+            logger.error("[ProductServiceImpl] [addProduct] : failed - product already exists");
             throw new ProductAlreadyExistsException("Product already exists with code: " + productDTO.getCode());
         }
         Product product = productRepository.save(ProductMapper.mapToProduct(productDTO, new Product()));
+        logger.info("[ProductServiceImpl] [addProduct] : success");
         return ProductMapper.mapToProductDTO(product, new ProductDTO());
     }
 
@@ -54,6 +61,7 @@ public class ProductServiceImpl implements ProductService {
                 () -> new ResourceNotFoundException("Couldn't find product by code: " + productDTO.getCode())
         );
         productRepository.save(ProductMapper.mapToProduct(productDTO, new Product()));
+        logger.info("[ProductServiceImpl] [updateProduct] : success");
         return getProductByCode(productDTO.getCode());
     }
 
@@ -63,6 +71,7 @@ public class ProductServiceImpl implements ProductService {
                 () -> new ResourceNotFoundException("Couldn't find product by code: " + code)
         );
         productRepository.deleteById(code);
+        logger.info("[ProductServiceImpl] [deleteProduct] : success");
         return true;
     }
 }
