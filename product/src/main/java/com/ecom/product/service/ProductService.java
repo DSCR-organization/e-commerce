@@ -9,5 +9,5 @@ public interface ProductService {
     ProductDTO getProductByCode(String code);
     ProductDTO addProduct(ProductDTO productDTO);
     ProductDTO updateProduct(ProductDTO productDTO);
-    void deleteProduct(String code);
+    boolean deleteProduct(String code);
 }
