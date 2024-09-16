@@ -40,12 +40,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO addProduct(ProductDTO productDTO) {
-        Optional<Product> checkProduct = productRepository.findById(productDTO.getCode());
+        Optional<Product> checkProduct = productRepository.findByProductName(productDTO.getProductName());
         if (checkProduct.isPresent()) {
             throw new ProductAlreadyExistsException("Product already exists with code: " + productDTO.getCode());
         }
-        productRepository.save(ProductMapper.mapToProduct(productDTO, new Product()));
-        return getProductByCode(productDTO.getCode());
+        Product product = productRepository.save(ProductMapper.mapToProduct(productDTO, new Product()));
+        return ProductMapper.mapToProductDTO(product, new ProductDTO());
     }
 
     @Override

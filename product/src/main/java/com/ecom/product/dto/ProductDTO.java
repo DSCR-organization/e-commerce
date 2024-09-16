@@ -1,12 +1,11 @@
 package com.ecom.product.dto;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -20,9 +19,9 @@ public class ProductDTO {
     private String description;
     @NotEmpty(message = "Product category can not be empty")
     private String category;
-    @NotEmpty(message = "Unit price can not be empty")
-    private BigDecimal unitPrice;
-    @NotEmpty(message = "quantity can not be empty")
+    @NotNull(message = "Unit price can not be null")
+    private long unitPrice;
+    @NotNull(message = "Quantity can not be null")
     private int quantity;
     private double discount = 0;
 }
