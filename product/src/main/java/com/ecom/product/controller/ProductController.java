@@ -2,6 +2,7 @@ package com.ecom.product.controller;
 
 import com.ecom.product.dto.ErrorResponseDTO;
 import com.ecom.product.dto.ProductDTO;
+import com.ecom.product.dto.ResponseDTO;
 import com.ecom.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,10 +35,14 @@ public class ProductController {
     @Operation(summary = "Get All Products")
     @ApiResponse(responseCode = "200", description = "HTTP Status OK")
     @GetMapping("/all")
-    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+    public ResponseEntity<ResponseDTO<List<ProductDTO>>> getAllProducts() {
         List<ProductDTO> products = productService.getAllProducts();
         logger.info("[ProductController] [getAllProducts] : success");
-        return ResponseEntity.status(HttpStatus.OK).body(products);
+        ResponseDTO<List<ProductDTO>> response = new ResponseDTO<>();
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(HttpStatus.OK.getReasonPhrase());
+        response.setData(products);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Operation(summary = "Get Product by Code")
@@ -47,10 +52,14 @@ public class ProductController {
                     content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     @GetMapping
-    public ResponseEntity<ProductDTO> getProductByCode(@RequestParam String code) {
+    public ResponseEntity<ResponseDTO<ProductDTO>> getProductByCode(@RequestParam String code) {
         ProductDTO product = productService.getProductByCode(code);
         logger.info("[ProductController] [getProductByCode] : success");
-        return ResponseEntity.status(HttpStatus.OK).body(product);
+        ResponseDTO<ProductDTO> response = new ResponseDTO<>();
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(HttpStatus.OK.getReasonPhrase());
+        response.setData(product);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Operation(summary = "Add Product")
@@ -60,10 +69,14 @@ public class ProductController {
                     content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO) {
+    public ResponseEntity<ResponseDTO<ProductDTO>> createProduct(@Valid @RequestBody ProductDTO productDTO) {
         ProductDTO product = productService.addProduct(productDTO);
         logger.info("[ProductController] [createProduct] : success");
-        return ResponseEntity.status(HttpStatus.CREATED).body(product);
+        ResponseDTO<ProductDTO> response = new ResponseDTO<>();
+        response.setCode(HttpStatus.CREATED.value());
+        response.setMessage(HttpStatus.CREATED.getReasonPhrase());
+        response.setData(product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Operation(summary = "Update Product")
@@ -73,10 +86,14 @@ public class ProductController {
                     content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     @PutMapping
-    public ResponseEntity<ProductDTO> updateProduct(@Valid @RequestBody ProductDTO productDTO) {
+    public ResponseEntity<ResponseDTO<ProductDTO>> updateProduct(@Valid @RequestBody ProductDTO productDTO) {
         ProductDTO product = productService.updateProduct(productDTO);
         logger.info("[ProductController] [updateProduct] : success");
-        return ResponseEntity.status(HttpStatus.OK).body(product);
+        ResponseDTO<ProductDTO> response = new ResponseDTO<>();
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(HttpStatus.OK.getReasonPhrase());
+        response.setData(product);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Operation(summary = "Delete Product")
@@ -86,9 +103,13 @@ public class ProductController {
                     content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     @DeleteMapping
-    public ResponseEntity<Boolean> deleteProduct(@RequestParam String code) {
+    public ResponseEntity<ResponseDTO<Boolean>> deleteProduct(@RequestParam String code) {
         boolean res = productService.deleteProduct(code);
         logger.info("[ProductController] [deleteProduct] : success");
-        return ResponseEntity.status(HttpStatus.OK).body(res);
+        ResponseDTO<Boolean> response = new ResponseDTO<>();
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(HttpStatus.OK.getReasonPhrase());
+        response.setData(res);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
