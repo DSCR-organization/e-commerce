@@ -38,14 +38,14 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody @Valid ProductDTO productDTO) {
+    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO) {
         ProductDTO product = productService.addProduct(productDTO);
         logger.info("[ProductController] [createProduct] : success");
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
     @PutMapping
-    public ResponseEntity<ProductDTO> updateProduct(@RequestBody @Valid ProductDTO productDTO) {
+    public ResponseEntity<ProductDTO> updateProduct(@Valid @RequestBody ProductDTO productDTO) {
         ProductDTO product = productService.updateProduct(productDTO);
         logger.info("[ProductController] [updateProduct] : success");
         return ResponseEntity.status(HttpStatus.OK).body(product);
