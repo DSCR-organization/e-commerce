@@ -1,6 +1,8 @@
-package com.ecom.product.exception;
+package com.ecom.product.advisor;
 
 import com.ecom.product.dto.ErrorResponseDTO;
+import com.ecom.product.exception.ProductAlreadyExistsException;
+import com.ecom.product.exception.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
